@@ -1,0 +1,71 @@
+---
+interface Props {
+  badge?: string;
+  title: string;
+  format?: string;
+  pages?: string;
+  imageUrl: string;
+  description: string;
+  downloadUrl: string;
+  features?: string[];
+}
+
+const {
+  badge = '100% Free Download',
+  title,
+  format = 'Instant PDF (US Letter & A4)',
+  pages = '2 Printable Pages',
+  imageUrl,
+  description,
+  downloadUrl,
+  features = [],
+} = Astro.props;
+---
+
+<div class="my-8 border-2 border-emerald-200/90 rounded-2xl p-6 bg-gradient-to-br from-emerald-50/50 via-white to-white shadow-sm hover:shadow-md transition duration-200">
+  <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+    <span class="inline-block bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm">
+      {badge}
+    </span>
+    <span class="text-xs font-semibold text-emerald-800 bg-emerald-100/70 px-2.5 py-0.5 rounded border border-emerald-200">
+      {format}
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+    <div class="flex justify-center bg-white p-3 rounded-xl border border-emerald-100 shadow-inner">
+      <img src={imageUrl} alt={title} class="rounded-lg max-h-56 object-contain" loading="lazy" />
+    </div>
+
+    <div class="md:col-span-2">
+      <h3 class="text-2xl font-black text-slate-900 mb-2">{title}</h3>
+      <p class="text-slate-700 text-sm mb-4 leading-relaxed">{description}</p>
+
+      {features && features.length > 0 && (
+        <div class="bg-white/80 p-3.5 rounded-xl border border-emerald-100 mb-5 text-xs text-slate-700">
+          <strong class="text-emerald-900 block font-bold mb-1.5">What is Included in This Kit:</strong>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pl-1">
+            {features.map((item) => (
+              <li class="flex items-center gap-1.5">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div class="flex flex-wrap items-center gap-3 pt-1">
+        <a
+          href={downloadUrl}
+          download
+          class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3 rounded-xl inline-flex items-center gap-2 shadow-md hover:shadow-lg transition transform active:scale-95"
+        >
+          <span>📥 Download Free PDF Now</span>
+          <span class="text-xs font-normal opacity-90">({pages})</span>
+        </a>
+        <span class="text-xs text-slate-500 font-medium">No email sign-up required • Instant direct print</span>
+      </div>
+    </div>
+  </div>
+</div>

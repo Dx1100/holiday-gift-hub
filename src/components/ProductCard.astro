@@ -1,0 +1,98 @@
+---
+interface Props {
+  badge?: string;
+  name: string;
+  priceGuide: string;
+  rating?: string;
+  imageUrl: string;
+  description: string;
+  usUrl: string;
+  ukUrl: string;
+  pros?: string[];
+  cons?: string[];
+}
+
+const {
+  badge,
+  name,
+  priceGuide,
+  rating = "4.8/5",
+  imageUrl,
+  description,
+  usUrl,
+  ukUrl,
+  pros,
+  cons,
+} = Astro.props;
+---
+
+<div class="product-card my-8 border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:shadow-md transition duration-200">
+  {badge && (
+    <span class="inline-block bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-xs uppercase tracking-wider px-3.5 py-1 rounded-full mb-4 shadow-sm">
+      {badge}
+    </span>
+  )}
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+    <div class="product-image flex justify-center bg-slate-50 p-4 rounded-xl border border-slate-100">
+      <img src={imageUrl} alt={name} class="rounded-lg max-h-56 object-contain" loading="lazy" />
+    </div>
+
+    <div class="md:col-span-2">
+      <h3 class="text-xl font-bold text-slate-900 mb-1">{name}</h3>
+
+      <div class="flex flex-wrap items-center gap-3 text-sm text-slate-600 mb-3">
+        <span class="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">{priceGuide}</span>
+        <span>•</span>
+        <span class="text-amber-600 font-semibold">★ {rating} on Amazon</span>
+      </div>
+
+      <p class="text-slate-700 text-sm mb-4 leading-relaxed">{description}</p>
+
+      {(pros || cons) && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5 text-xs">
+          {pros && pros.length > 0 && (
+            <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+              <strong class="text-emerald-900 block font-semibold mb-1">✓ Why We Love It:</strong>
+              <ul class="list-disc pl-4 text-emerald-950 space-y-0.5">
+                {pros.map((p) => <li>{p}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {cons && cons.length > 0 && (
+            <div class="bg-rose-50 p-3 rounded-lg border border-rose-200">
+              <strong class="text-rose-900 block font-semibold mb-1">✕ Keep in Mind:</strong>
+              <ul class="list-disc pl-4 text-rose-950 space-y-0.5">
+                {cons.map((c) => <li>{c}</li>)}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Multi-Region Affiliate CTA Buttons -->
+      <div class="flex flex-wrap items-center gap-3 pt-1">
+        <a
+          href={usUrl}
+          target="_blank"
+          rel="noopener sponsored"
+          class="bg-blue-900 hover:bg-blue-800 text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg inline-flex items-center gap-2 shadow hover:shadow-md transition"
+        >
+          <span>🇺🇸 Check Price (Amazon US)</span>
+          <span>→</span>
+        </a>
+
+        <a
+          href={ukUrl}
+          target="_blank"
+          rel="noopener sponsored"
+          class="bg-emerald-800 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg inline-flex items-center gap-2 shadow hover:shadow-md transition"
+        >
+          <span>🇬🇧 Check Price (Amazon UK)</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const printables = await getCollection('blog', ({ data }) => {
+  return data.category === 'Printables' || data.isPrintable === true;
+});
+---
+
+<Layout
+  title="Free Holiday Printable Games & Secret Santa Kits (PDF Downloads)"
+  description="Instant free downloadable PDF printables for holiday parties, office Secret Santa questionnaires, trivia games, and festive icebreakers."
+>
+  <section class="bg-gradient-to-b from-emerald-50 to-slate-50 py-14 sm:py-20 border-b border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      <span class="inline-block text-xs font-bold tracking-widest uppercase bg-emerald-100 text-emerald-800 px-4 py-1.5 rounded-full mb-4">
+        Instant Digital Downloads • No Shipping Waiting
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black text-slate-950 tracking-tight leading-tight mb-4">
+        Free Holiday Party Games & <span class="text-emerald-700 underline decoration-emerald-300">Secret Santa Printables</span>
+      </h1>
+      <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto mb-6">
+        Save your holiday party or office exchange with instant, high-resolution PDFs formatted for standard US Letter and UK A4 home printers.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-14">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {printables.map((item) => (
+        <a
+          href={`/blog/${item.slug}`}
+          class="group bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition flex flex-col"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+              100% Free Printable
+            </span>
+            <span class="text-xs text-slate-400">Direct PDF</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition mb-2">
+            {item.data.title}
+          </h3>
+          <p class="text-sm text-slate-600 mb-6 flex-1">
+            {item.data.description}
+          </p>
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+            <span>View & Download Kit</span>
+            <span>→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

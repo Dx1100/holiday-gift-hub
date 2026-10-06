@@ -1,0 +1,76 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  articleDate?: Date;
+  author?: string;
+  category?: string;
+  isAffiliate?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = '/images/default-og.jpg',
+  articleDate,
+  author = 'Festive Editorial Team',
+  category,
+  isAffiliate = true,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://holiday-gift-hub.pages.dev');
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const ogImageURL = new URL(image, siteUrl);
+---
+
+<!-- Core Metas -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href={canonicalURL} />
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph / Facebook -->
+<meta property="og:type" content={articleDate ? "article" : "website"} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageURL} />
+
+<!-- Pinterest Rich Pins -->
+{articleDate && <meta property="article:published_time" content={articleDate.toISOString()} />}
+<meta property="article:author" content={author} />
+{category && <meta property="article:section" content={category} />}
+<meta name="pinterest-rich-pin" content="true" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImageURL} />
+
+<!-- Structured Data: Article & Publisher Schema -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": articleDate ? "Article" : "WebSite",
+  "headline": title,
+  "description": description,
+  "image": ogImageURL.toString(),
+  ...(articleDate && {
+    "datePublished": articleDate.toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": author
+    }
+  }),
+  "publisher": {
+    "@type": "Organization",
+    "name": "Holiday Gift Hub",
+    "url": siteUrl.toString()
+  }
+})} />
