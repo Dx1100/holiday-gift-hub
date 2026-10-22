@@ -9,6 +9,6 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-    mdx()
+    mdx(),
   ],
 });
